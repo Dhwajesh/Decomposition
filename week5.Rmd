@@ -1,0 +1,37 @@
+---
+title: "Week5"
+author: "Dhwajesh Bhandari"
+output: html_document
+date: "2024-10-11"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+
+
+```{r}
+library(readxl)
+library(tidyverse)
+library(lubridate)
+library(tsibble)
+
+data <- read_excel("/Users/dhwajeshbhandari/Documents/RStudio/Monthly_Fuel_Prices.xlsx", sheet = "Sheet1")
+
+data <- data %>%
+  mutate(Date = ymd(Date)) %>%
+  rename(Price = `Petrol (USD)`) 
+
+time_series_data <- ts(data$Price, start = c(year(min(data$Date)), month(min(data$Date))), frequency = 12)
+
+decomposed_ts <- decompose(time_series_data)
+
+plot(decomposed_ts)
+
+```
+
+
